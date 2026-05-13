@@ -1,0 +1,67 @@
+<section class="offers-section" aria-labelledby="offers-title">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" id="offers-title">Ofertas especiales</h2>
+        <p class="section-subtitle">Aprovecha antes de que se agoten</p>
+      </div>
+    </div>
+
+    <div class="offers-grid">
+
+      <div class="offer-card offer-card-main">
+        <div class="offer-pattern"></div>
+        <div class="offer-content">
+          <span class="offer-tag">🔥 Oferta del día</span>
+          <h2 class="offer-title">Hasta 50% OFF<br>en juguetes LEGO</h2>
+          <p class="offer-subtitle">Sets de construcción para todas las edades</p>
+
+          <div class="countdown" data-countdown="{{ 'now' | date: '%Y-%m-%d' }}T23:59:59">
+            <div class="countdown-item">
+              <span class="countdown-number" data-hours>00</span>
+              <span class="countdown-label">Horas</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-number" data-minutes>00</span>
+              <span class="countdown-label">Min</span>
+            </div>
+            <div class="countdown-item">
+              <span class="countdown-number" data-seconds>00</span>
+              <span class="countdown-label">Seg</span>
+            </div>
+          </div>
+
+          <a href="/collections/lego" class="btn btn-accent">
+            Ver ofertas LEGO →
+          </a>
+        </div>
+      </div>
+
+      <div class="offer-card offer-card-secondary">
+        <div class="offer-pattern"></div>
+        <div class="offer-content">
+          <span class="offer-tag" style="background:white;color:var(--color-text)">⚡ Flash Sale</span>
+          <h2 class="offer-title">2x1 en juguetes<br>educativos</h2>
+          <p class="offer-subtitle">Lleva 2 y paga solo 1 en productos seleccionados</p>
+
+          <div style="font-size:2.5rem;margin-bottom:24px;animation:float 3s ease-in-out infinite;">
+            📚🎯🔬
+          </div>
+
+          <a href="/collections/educativos" class="btn" style="background:white;color:var(--color-primary-dark);font-weight:800;border-radius:9999px;padding:12px 28px;">
+            Ver productos →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ofertas especiales",
+  "settings": [],
+  "presets": [{ "name": "Ofertas especiales" }]
+}
+{% endschema %}

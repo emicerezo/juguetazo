@@ -1,0 +1,17 @@
+{
+  "current": {
+    "color_primary": "#1B8A3C",
+    "color_primary_dark": "#145E2A",
+    "color_accent": "#FFD600",
+    "font_heading": "nunito_n8",
+    "font_body": "nunito_n4",
+    "store_name": "Juguetazo",
+    "store_tagline": "¡Diversión garantizada!",
+    "logo_max_width": 150,
+    "free_shipping_threshold": 69900,
+    "shipping_badge_text": "Envío GRATIS en compras mayores a $699 MXN",
+    "contact_phone": "800 JUGUETAZO",
+    "contact_email": "hola@juguetazo.mx",
+    "contact_hours": "Lun–Vie: 9am–7pm · Sáb: 9am–2pm"
+  }
+}

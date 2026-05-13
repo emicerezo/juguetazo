@@ -1,0 +1,64 @@
+{%- assign collection = collections[section.settings.collection] -%}
+
+<section class="products-section" aria-labelledby="featured-title">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" id="featured-title">
+          {{ section.settings.title | default: 'Productos destacados' }}
+        </h2>
+        <p class="section-subtitle">{{ section.settings.subtitle | default: 'Los favoritos de nuestros clientes' }}</p>
+      </div>
+      {%- if section.settings.collection != blank -%}
+        <a href="{{ collection.url }}" class="btn btn-secondary">Ver todos →</a>
+      {%- endif -%}
+    </div>
+
+    <div class="products-grid">
+      {%- if collection != blank -%}
+        {%- for product in collection.products limit: section.settings.products_count -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..8) -%}
+          {% render 'product-card-placeholder', index: i %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Productos destacados",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Productos destacados"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtítulo",
+      "default": "Los favoritos de nuestros clientes"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Colección"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Número de productos",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "default": 8
+    }
+  ],
+  "presets": [{ "name": "Productos destacados" }]
+}
+{% endschema %}

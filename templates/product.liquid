@@ -1,0 +1,161 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign product_images = product.images -%}
+
+<div class="container" style="padding-top:40px;padding-bottom:64px;">
+
+  <!-- Breadcrumb -->
+  <nav aria-label="Ruta de navegación" style="margin-bottom:24px;font-size:0.82rem;color:var(--color-text-light);display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+    <a href="/" style="color:var(--color-text-light);text-decoration:none;">Inicio</a>
+    <span>›</span>
+    {%- if product.collections.first -%}
+      <a href="{{ product.collections.first.url }}" style="color:var(--color-text-light);text-decoration:none;">{{ product.collections.first.title }}</a>
+      <span>›</span>
+    {%- endif -%}
+    <span style="color:var(--color-text);font-weight:600;">{{ product.title }}</span>
+  </nav>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
+
+    <!-- Product Images -->
+    <div class="product-gallery">
+      <div style="border-radius:var(--radius-xl);overflow:hidden;background:var(--color-gray-light);aspect-ratio:1;margin-bottom:12px;">
+        <img
+          id="main-product-image"
+          src="{{ product.featured_image | img_url: '700x700', crop: 'center' }}"
+          alt="{{ product.featured_image.alt | default: product.title }}"
+          style="width:100%;height:100%;object-fit:contain;"
+          loading="eager"
+        >
+      </div>
+      {%- if product.images.size > 1 -%}
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+          {%- for image in product.images limit: 5 -%}
+            <button
+              onclick="document.getElementById('main-product-image').src='{{ image | img_url: '700x700' }}'"
+              style="border-radius:var(--radius-md);overflow:hidden;border:2px solid var(--color-border);padding:0;cursor:pointer;aspect-ratio:1;background:var(--color-gray-light);transition:border-color 0.2s;"
+              onmouseover="this.style.borderColor='var(--color-primary)'"
+              onmouseout="this.style.borderColor='var(--color-border)'"
+            >
+              <img src="{{ image | img_url: '120x120', crop: 'center' }}" alt="{{ image.alt }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-details">
+      {%- if product.vendor != blank -%}
+        <span style="font-size:0.75rem;font-weight:700;color:var(--color-primary);text-transform:uppercase;letter-spacing:0.06em;">{{ product.vendor }}</span>
+      {%- endif -%}
+
+      <h1 style="font-size:1.8rem;font-weight:900;margin:8px 0 16px;line-height:1.2;">{{ product.title }}</h1>
+
+      <!-- Rating -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+        <div style="color:#FFB800;font-size:1rem;">★★★★★</div>
+        <span style="font-size:0.82rem;color:var(--color-text-light);">({{ product.metafields.reviews.rating_count | default: '0' }} reseñas)</span>
+        {%- if current_variant.available -%}
+          <span style="background:rgba(27,138,60,0.1);color:var(--color-primary);font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:9999px;">✅ En stock</span>
+        {%- else -%}
+          <span style="background:rgba(255,59,59,0.1);color:var(--color-sale);font-size:0.75rem;font-weight:700;padding:3px 10px;border-radius:9999px;">Agotado</span>
+        {%- endif -%}
+      </div>
+
+      <!-- Price -->
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:24px;padding:16px;background:var(--color-off-white);border-radius:var(--radius-md);border:1.5px solid var(--color-border);">
+        <span style="font-size:2rem;font-weight:900;color:var(--color-primary-dark);">
+          <span id="product-price">{{ current_variant.price | money }}</span>
+        </span>
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <span style="font-size:1.1rem;color:var(--color-gray);text-decoration:line-through;">{{ current_variant.compare_at_price | money }}</span>
+          {%- assign discount_pct = current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price -%}
+          <span style="background:var(--color-sale);color:white;font-size:0.8rem;font-weight:800;padding:4px 10px;border-radius:9999px;">-{{ discount_pct }}%</span>
+        {%- endif -%}
+      </div>
+
+      <!-- Variants -->
+      {%- unless product.has_only_default_variant -%}
+        <div style="margin-bottom:24px;">
+          {%- for option in product.options_with_values -%}
+            <div style="margin-bottom:16px;">
+              <label style="font-size:0.85rem;font-weight:700;display:block;margin-bottom:8px;">
+                {{ option.name }}:
+              </label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                {%- for value in option.values -%}
+                  <button
+                    style="padding:8px 18px;border-radius:var(--radius-full);border:2px solid var(--color-border);font-size:0.85rem;font-weight:600;cursor:pointer;background:white;transition:all 0.2s;"
+                    onmouseover="this.style.borderColor='var(--color-primary)';this.style.color='var(--color-primary)'"
+                    onmouseout="this.style.borderColor='var(--color-border)';this.style.color=''"
+                  >
+                    {{ value }}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endunless -%}
+
+      <!-- Quantity & CTA -->
+      <div style="display:flex;gap:12px;margin-bottom:16px;align-items:center;">
+        <div class="qty-control" style="border:2px solid var(--color-border);border-radius:9999px;overflow:hidden;flex-shrink:0;">
+          <button class="qty-btn" data-action="decrease" style="width:40px;height:48px;background:var(--color-gray-light);font-size:1.2rem;font-weight:700;cursor:pointer;border:none;transition:background 0.2s;" onmouseover="this.style.background='var(--color-primary)';this.style.color='white'" onmouseout="this.style.background='var(--color-gray-light)';this.style.color=''">−</button>
+          <input class="qty-value" type="number" value="1" min="1" max="99" style="width:50px;text-align:center;font-size:1rem;font-weight:800;border:none;outline:none;" id="product-quantity">
+          <button class="qty-btn" data-action="increase" style="width:40px;height:48px;background:var(--color-gray-light);font-size:1.2rem;font-weight:700;cursor:pointer;border:none;transition:background 0.2s;" onmouseover="this.style.background='var(--color-primary)';this.style.color='white'" onmouseout="this.style.background='var(--color-gray-light)';this.style.color=''">+</button>
+        </div>
+        <button
+          class="btn btn-primary"
+          style="flex:1;padding:14px 24px;font-size:1rem;justify-content:center;"
+          data-add-to-cart="{{ current_variant.id }}"
+          data-product-title="{{ product.title | escape }}"
+          {%- unless current_variant.available -%}disabled style="background:var(--color-gray);cursor:not-allowed;"{%- endunless -%}
+        >
+          🛒 Agregar al carrito
+        </button>
+      </div>
+
+      <a href="/checkout?variant={{ current_variant.id }}&quantity=1" class="btn btn-accent btn-lg" style="width:100%;justify-content:center;margin-bottom:24px;">
+        ⚡ Comprar ahora
+      </a>
+
+      <!-- Trust badges -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;">
+        <div style="text-align:center;padding:12px 8px;background:var(--color-off-white);border-radius:var(--radius-md);border:1px solid var(--color-border);">
+          <div style="font-size:1.5rem;">🚚</div>
+          <div style="font-size:0.72rem;font-weight:700;color:var(--color-text);">Envío gratis</div>
+          <div style="font-size:0.65rem;color:var(--color-text-light);">+$699 MXN</div>
+        </div>
+        <div style="text-align:center;padding:12px 8px;background:var(--color-off-white);border-radius:var(--radius-md);border:1px solid var(--color-border);">
+          <div style="font-size:1.5rem;">🔒</div>
+          <div style="font-size:0.72rem;font-weight:700;color:var(--color-text);">Pago seguro</div>
+          <div style="font-size:0.65rem;color:var(--color-text-light);">SSL Certificado</div>
+        </div>
+        <div style="text-align:center;padding:12px 8px;background:var(--color-off-white);border-radius:var(--radius-md);border:1px solid var(--color-border);">
+          <div style="font-size:1.5rem;">↩️</div>
+          <div style="font-size:0.72rem;font-weight:700;color:var(--color-text);">30 días</div>
+          <div style="font-size:0.65rem;color:var(--color-text-light);">Devolución gratis</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      {%- if product.description != blank -%}
+        <div style="border-top:1.5px solid var(--color-border);padding-top:24px;">
+          <h3 style="font-size:0.95rem;font-weight:800;margin-bottom:12px;">Descripción del producto</h3>
+          <div style="font-size:0.88rem;color:var(--color-text-light);line-height:1.8;">
+            {{ product.description }}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @media (max-width:768px) {
+    .product-gallery, .product-details { grid-column: 1 / -1 !important; }
+    .container > div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+  }
+</style>

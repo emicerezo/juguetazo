@@ -1,0 +1,105 @@
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Envíos a toda la República Mexicana
+        </div>
+
+        <h1 class="hero-title" id="hero-title">
+          El mundo de la<br>
+          <span class="highlight">diversión</span> está<br>
+          aquí para ti
+        </h1>
+
+        <p class="hero-subtitle">
+          Más de 3,000 juguetes seleccionados con amor para bebés, niños y adolescentes.
+          Calidad garantizada, envío rápido a todo México.
+        </p>
+
+        <div class="hero-actions">
+          <a href="/collections/all" class="btn btn-primary btn-lg">
+            🛍️ Ver catálogo completo
+          </a>
+          <a href="/collections/ofertas" class="btn btn-secondary btn-lg">
+            🔥 Ver ofertas
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number">3,000+</span>
+            <span class="stat-label">Productos</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">50,000+</span>
+            <span class="stat-label">Clientes felices</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">4.9★</span>
+            <span class="stat-label">Calificación</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-image">
+        <div class="hero-image-wrapper">
+          <div class="hero-image-bg"></div>
+          {%- if section.settings.hero_image -%}
+            <img
+              class="hero-main-image"
+              src="{{ section.settings.hero_image | img_url: '600x' }}"
+              alt="{{ section.settings.hero_image.alt | default: 'Juguetes Juguetazo' }}"
+              loading="eager"
+              fetchpriority="high"
+            >
+          {%- else -%}
+            <img
+              class="hero-main-image"
+              src="https://cdn.shopify.com/s/files/1/placeholder/products/toy-hero.png"
+              alt="Juguetes para toda la familia"
+              loading="eager"
+            >
+          {%- endif -%}
+
+          <div class="hero-floating-badge">
+            <span class="badge-emoji">🚚</span>
+            <div>
+              <div style="font-weight:800;font-size:0.82rem;color:#1C2B22">Envío gratis</div>
+              <div style="font-size:0.7rem;color:#5A7A65">Compras +$699 MXN</div>
+            </div>
+          </div>
+
+          <div class="hero-floating-badge">
+            <span class="badge-emoji">⭐</span>
+            <div>
+              <div style="font-weight:800;font-size:0.82rem;color:#1C2B22">4.9/5 estrellas</div>
+              <div style="font-size:0.7rem;color:#5A7A65">+2,400 reseñas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero principal",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Imagen principal del hero"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero principal"
+    }
+  ]
+}
+{% endschema %}

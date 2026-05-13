@@ -1,0 +1,59 @@
+{%- assign placeholder_images = 'toy-1,toy-2,toy-3,toy-4,toy-5,toy-6,toy-7,toy-8' | split: ',' -%}
+{%- assign placeholder_titles = 'Dinosaurio T-Rex Rugiente,Set de Bloques Creactivos,Muñeca Princess Magic,Carro de Control Remoto,Kit de Ciencia Junior,Rompecabezas 200 piezas,Set de Pintura Artística,Robot Explorador 3000' | split: ',' -%}
+{%- assign placeholder_prices = '349,299,449,589,279,189,199,699' | split: ',' -%}
+{%- assign placeholder_compare = '499,399,599,799,349,249,269,899' | split: ',' -%}
+{%- assign placeholder_brands = 'FisherPrice,Mega Bloks,Barbie,Hot Wheels,Little Tikes,Ravensburger,Crayola,LEGO' | split: ',' -%}
+{%- assign placeholder_emojis = '🦕,🏗️,👸,🏎️,🔬,🧩,🎨,🤖' | split: ',' -%}
+
+{%- assign idx = index | minus: 1 -%}
+{%- assign title = placeholder_titles[idx] -%}
+{%- assign price = placeholder_prices[idx] -%}
+{%- assign compare = placeholder_compare[idx] -%}
+{%- assign brand = placeholder_brands[idx] -%}
+{%- assign emoji = placeholder_emojis[idx] -%}
+
+<article class="product-card">
+  <div class="product-image-wrapper">
+    <a href="#">
+      <div style="width:100%;aspect-ratio:1;background:linear-gradient(135deg,#E8F5EC 0%,#C8E6C9 100%);display:flex;align-items:center;justify-content:center;font-size:5rem;">
+        {{ emoji }}
+      </div>
+    </a>
+    <div class="product-badges">
+      <span class="badge badge-sale">-30%</span>
+    </div>
+    <div class="product-actions">
+      <button class="product-action-btn" aria-label="Favoritos">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+      <a href="#" class="product-action-btn" aria-label="Ver">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="product-info">
+    <span class="product-brand">{{ brand }}</span>
+    <h3 class="product-title"><a href="#">{{ title }}</a></h3>
+    <div class="product-rating">
+      <div class="stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <span class="rating-count">(128)</span>
+    </div>
+    <div class="product-pricing">
+      <span class="price-current">${{ price }} MXN</span>
+      <span class="price-original">${{ compare }} MXN</span>
+      <span class="price-discount">-30%</span>
+    </div>
+  </div>
+
+  <div class="product-footer">
+    <button class="btn-cart">🛒 Agregar al carrito</button>
+  </div>
+</article>

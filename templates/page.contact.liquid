@@ -1,0 +1,118 @@
+<div class="container" style="padding-top:48px;padding-bottom:64px;max-width:900px;">
+  <h1 style="font-size:2rem;font-weight:900;color:var(--color-primary-dark);margin-bottom:8px;">📞 Contacto</h1>
+  <p style="color:var(--color-text-light);margin-bottom:40px;">Estamos aquí para ayudarte. Contáctanos por cualquiera de estas vías.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+
+    <div>
+      <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:24px;">Envíanos un mensaje</h2>
+      {%- form 'contact' -%}
+        {%- if form.posted_successfully? -%}
+          <div style="background:rgba(27,138,60,0.1);border:1.5px solid var(--color-primary);border-radius:var(--radius-md);padding:16px;margin-bottom:20px;color:var(--color-primary-dark);font-weight:600;">
+            ✅ ¡Mensaje enviado! Te responderemos en menos de 24 horas.
+          </div>
+        {%- endif -%}
+
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:6px;" for="contact-name">Nombre completo *</label>
+            <input type="text" id="contact-name" name="contact[name]" required
+              style="width:100%;padding:12px 16px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:0.9rem;font-family:inherit;outline:none;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'"
+              placeholder="Tu nombre">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:6px;" for="contact-email">Correo electrónico *</label>
+            <input type="email" id="contact-email" name="contact[email]" required
+              style="width:100%;padding:12px 16px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:0.9rem;font-family:inherit;outline:none;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'"
+              placeholder="tu@correo.com">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:6px;" for="contact-phone">Teléfono</label>
+            <input type="tel" id="contact-phone" name="contact[phone]"
+              style="width:100%;padding:12px 16px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:0.9rem;font-family:inherit;outline:none;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'"
+              placeholder="+52 55 0000 0000">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:6px;" for="contact-subject">Asunto</label>
+            <select id="contact-subject" name="contact[subject]"
+              style="width:100%;padding:12px 16px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:0.9rem;font-family:inherit;background:white;cursor:pointer;outline:none;">
+              <option value="">Selecciona un tema</option>
+              <option value="pedido">Estado de mi pedido</option>
+              <option value="devolucion">Devolución o cambio</option>
+              <option value="producto">Pregunta sobre un producto</option>
+              <option value="mayoreo">Compras al mayoreo</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:0.85rem;font-weight:700;margin-bottom:6px;" for="contact-message">Mensaje *</label>
+            <textarea id="contact-message" name="contact[body]" rows="5" required
+              style="width:100%;padding:12px 16px;border:1.5px solid var(--color-border);border-radius:var(--radius-md);font-size:0.9rem;font-family:inherit;resize:vertical;outline:none;transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'"
+              placeholder="¿En qué podemos ayudarte?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;">
+            Enviar mensaje →
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <h2 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Otros medios de contacto</h2>
+
+      <a href="https://wa.me/5215500000000" target="_blank" rel="noopener"
+        style="display:flex;align-items:center;gap:16px;padding:20px;background:#E7F5EA;border:1.5px solid #25D366;border-radius:var(--radius-lg);text-decoration:none;transition:all 0.2s;"
+        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <div style="width:48px;height:48px;background:#25D366;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">💬</div>
+        <div>
+          <div style="font-weight:800;color:#1C2B22;">WhatsApp</div>
+          <div style="font-size:0.82rem;color:#5A7A65;">Respuesta en menos de 1 hora</div>
+          <div style="font-size:0.82rem;font-weight:700;color:#25D366;">+52 55 0000 0000</div>
+        </div>
+      </a>
+
+      <div style="padding:20px;background:var(--color-off-white);border:1.5px solid var(--color-border);border-radius:var(--radius-lg);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+          <span style="font-size:1.4rem;">📞</span>
+          <div>
+            <div style="font-weight:800;">Teléfono</div>
+            <div style="font-size:0.82rem;color:var(--color-text-light);">Lun–Vie 9am–7pm · Sáb 9am–2pm</div>
+            <div style="font-weight:700;color:var(--color-primary);">800 JUGUETAZO</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:20px;background:var(--color-off-white);border:1.5px solid var(--color-border);border-radius:var(--radius-lg);">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:1.4rem;">✉️</span>
+          <div>
+            <div style="font-weight:800;">Email</div>
+            <div style="font-size:0.82rem;color:var(--color-text-light);">Te respondemos en menos de 24 horas</div>
+            <div style="font-weight:700;color:var(--color-primary);">hola@juguetazo.mx</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:20px;background:rgba(27,138,60,0.06);border:1.5px solid rgba(27,138,60,0.2);border-radius:var(--radius-lg);">
+        <h3 style="font-size:0.88rem;font-weight:800;margin-bottom:8px;">🚚 Información de envíos</h3>
+        <ul style="font-size:0.82rem;color:var(--color-text-light);display:flex;flex-direction:column;gap:6px;">
+          <li>📦 Envío estándar: 2–5 días hábiles</li>
+          <li>⚡ Envío exprés: 24–48 horas</li>
+          <li>🆓 GRATIS en compras +$699 MXN</li>
+          <li>🇲🇽 Cobertura: toda la República Mexicana</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@media (max-width:768px) {
+  .container > div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+}
+</style>

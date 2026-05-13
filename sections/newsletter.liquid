@@ -1,0 +1,46 @@
+<section class="newsletter-section" aria-labelledby="newsletter-title">
+  <div class="container">
+    <div class="newsletter-inner">
+
+      <div class="newsletter-content">
+        <h2 id="newsletter-title">¡Únete a la familia Juguetazo!</h2>
+        <p>
+          Recibe las mejores ofertas, descuentos exclusivos y lanzamientos de nuevos productos directamente en tu correo.
+          <strong>¡Suscríbete y obtén 10% OFF en tu primera compra!</strong>
+        </p>
+      </div>
+
+      <div class="newsletter-form-wrapper">
+        {% form 'customer', id: 'newsletter-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="newsletter-form">
+            <input
+              class="newsletter-input"
+              type="email"
+              name="contact[email]"
+              placeholder="tu@correo.com"
+              required
+              aria-label="Correo electrónico"
+              autocomplete="email"
+            >
+            <button type="submit" class="newsletter-btn">
+              Suscribirme →
+            </button>
+          </div>
+        {% endform %}
+        <p class="newsletter-note">
+          🔒 Sin spam. Puedes darte de baja cuando quieras.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

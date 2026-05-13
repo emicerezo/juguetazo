@@ -1,0 +1,106 @@
+{%- assign first_variant = product.first_available_variant | default: product.variants.first -%}
+{%- assign on_sale = false -%}
+{%- if first_variant.compare_at_price > first_variant.price -%}
+  {%- assign on_sale = true -%}
+  {%- assign discount = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price -%}
+{%- endif -%}
+
+<article class="product-card" aria-label="{{ product.title }}">
+  <div class="product-image-wrapper">
+    <a href="{{ product.url }}">
+      {%- if product.featured_image -%}
+        <img
+          class="product-image"
+          src="{{ product.featured_image | img_url: '400x400', crop: 'center' }}"
+          alt="{{ product.featured_image.alt | default: product.title }}"
+          loading="lazy"
+          width="400"
+          height="400"
+        >
+      {%- else -%}
+        <img
+          class="product-image"
+          src="{{ 'product-placeholder.png' | asset_url }}"
+          alt="{{ product.title }}"
+          loading="lazy"
+          width="400"
+          height="400"
+        >
+      {%- endif -%}
+    </a>
+
+    <div class="product-badges">
+      {%- if on_sale -%}
+        <span class="badge badge-sale">-{{ discount }}%</span>
+      {%- endif -%}
+      {%- if product.created_at > 'now' | date: '%s' | minus: 2592000 | date: '%Y-%m-%dT%H:%M:%SZ' -%}
+        <span class="badge badge-new">Nuevo</span>
+      {%- endif -%}
+    </div>
+
+    <div class="product-actions">
+      <button
+        class="product-action-btn"
+        data-wishlist="{{ product.id }}"
+        aria-label="Agregar a favoritos"
+        title="Favoritos"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+      <a href="{{ product.url }}" class="product-action-btn" aria-label="Ver detalles" title="Ver detalles">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="product-info">
+    {%- if product.vendor != blank -%}
+      <span class="product-brand">{{ product.vendor }}</span>
+    {%- endif -%}
+
+    <h3 class="product-title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <div class="product-rating" aria-label="4.5 de 5 estrellas">
+      <div class="stars" aria-hidden="true">
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+      </div>
+      <span class="rating-count">({{ product.metafields.reviews.rating_count | default: '0' }})</span>
+    </div>
+
+    <div class="product-pricing">
+      <span class="price-current">{{ first_variant.price | money }}</span>
+      {%- if on_sale -%}
+        <span class="price-original">{{ first_variant.compare_at_price | money }}</span>
+        <span class="price-discount">-{{ discount }}%</span>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="product-footer">
+    {%- if first_variant.available -%}
+      <button
+        class="btn-cart"
+        data-add-to-cart="{{ first_variant.id }}"
+        data-product-title="{{ product.title | escape }}"
+        aria-label="Agregar {{ product.title }} al carrito"
+      >
+        🛒 Agregar al carrito
+      </button>
+    {%- else -%}
+      <button class="btn-cart" disabled style="background:#9DB8A5;cursor:not-allowed;">
+        Agotado
+      </button>
+    {%- endif -%}
+  </div>
+</article>

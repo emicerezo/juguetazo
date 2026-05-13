@@ -1,0 +1,49 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "promo-banner": {
+      "type": "promo-banner",
+      "settings": {}
+    },
+    "categories": {
+      "type": "categories",
+      "settings": {}
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "title": "Más vendidos",
+        "subtitle": "Los favoritos de nuestros clientes",
+        "products_count": 8
+      }
+    },
+    "offers": {
+      "type": "offers",
+      "settings": {}
+    },
+    "new-arrivals": {
+      "type": "featured-products",
+      "settings": {
+        "title": "Nuevos lanzamientos",
+        "subtitle": "Los últimos juguetes recién llegados",
+        "products_count": 4
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "promo-banner",
+    "categories",
+    "featured-products",
+    "offers",
+    "new-arrivals",
+    "testimonials"
+  ]
+}

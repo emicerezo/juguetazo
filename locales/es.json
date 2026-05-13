@@ -1,0 +1,82 @@
+{
+  "general": {
+    "search": {
+      "placeholder": "Buscar juguetes, marcas, edades...",
+      "submit": "Buscar",
+      "no_results": "No se encontraron resultados para \"{{ terms }}\""
+    },
+    "pagination": {
+      "previous": "← Anterior",
+      "next": "Siguiente →"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Agregar al carrito",
+      "buy_now": "Comprar ahora",
+      "sold_out": "Agotado",
+      "unavailable": "No disponible",
+      "quantity": {
+        "label": "Cantidad",
+        "increase": "Aumentar",
+        "decrease": "Disminuir"
+      }
+    },
+    "filters": {
+      "title": "Filtros",
+      "clear_all": "Limpiar filtros",
+      "sort_by": "Ordenar por",
+      "sort_options": {
+        "best_selling": "Más vendidos",
+        "price_asc": "Precio: menor a mayor",
+        "price_desc": "Precio: mayor a menor",
+        "newest": "Más nuevos",
+        "title_asc": "Nombre A–Z"
+      }
+    }
+  },
+  "cart": {
+    "title": "Mi Carrito",
+    "empty": "Tu carrito está vacío",
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "checkout": "Finalizar compra",
+    "continue_shopping": "Seguir comprando",
+    "free_shipping_threshold": "Te faltan {{ amount }} para envío gratis",
+    "free_shipping_earned": "¡Tienes envío gratis! 🎉"
+  },
+  "customer": {
+    "login": {
+      "title": "Iniciar sesión",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Entrar",
+      "forgot_password": "¿Olvidaste tu contraseña?"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Crear cuenta"
+    }
+  },
+  "sections": {
+    "newsletter": {
+      "title": "¡Únete a la familia Juguetazo!",
+      "subtitle": "Recibe las mejores ofertas y novedades en tu correo",
+      "placeholder": "tu@correo.com",
+      "submit": "Suscribirme",
+      "disclaimer": "Sin spam. Puedes darte de baja cuando quieras."
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Ir al contenido principal",
+    "close": "Cerrar",
+    "open_navigation": "Abrir navegación",
+    "close_navigation": "Cerrar navegación",
+    "open_cart": "Abrir carrito",
+    "close_cart": "Cerrar carrito"
+  }
+}

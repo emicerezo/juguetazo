@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1B8A3C">
+  <title>
+    {%- if template.name == 'index' -%}
+      {{ shop.name }} – Juguetes para Toda la Familia | Envíos a Todo México
+    {%- elsif page_title -%}
+      {{ page_title }} | {{ shop.name }}
+    {%- else -%}
+      {{ shop.name }}
+    {%- endif -%}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  {{ content_for_header }}
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+</head>
+<body>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+  {% section 'navigation' %}
+
+  <main id="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'newsletter' %}
+  {% section 'footer' %}
+
+  {% section 'cart-drawer' %}
+
+  <div class="mobile-menu-overlay"></div>
+  <nav class="mobile-menu" aria-label="Menú móvil">
+    <div class="mobile-menu-header">
+      <a href="/" class="site-logo">
+        <div class="logo-icon">🎮</div>
+        <div class="logo-text">
+          <span class="logo-name">Juguetazo</span>
+          <span class="logo-tagline">¡Diversión garantizada!</span>
+        </div>
+      </a>
+      <button class="mobile-close" aria-label="Cerrar menú">✕</button>
+    </div>
+    <div class="mobile-menu-body">
+      <a href="/collections/all" class="mobile-nav-link"><span>🧸</span> Todos los Juguetes</a>
+      <a href="/collections/bebes" class="mobile-nav-link"><span>👶</span> Bebés (0–2 años)</a>
+      <a href="/collections/preescolar" class="mobile-nav-link"><span>🎨</span> Preescolar (3–5 años)</a>
+      <a href="/collections/ninos" class="mobile-nav-link"><span>🎯</span> Niños (6–10 años)</a>
+      <a href="/collections/adolescentes" class="mobile-nav-link"><span>🎮</span> Adolescentes (11+)</a>
+      <a href="/collections/outdoor" class="mobile-nav-link"><span>🏃</span> Al Aire Libre</a>
+      <a href="/collections/educativos" class="mobile-nav-link"><span>📚</span> Educativos</a>
+      <a href="/collections/ofertas" class="mobile-nav-link"><span>🏷️</span> Ofertas</a>
+      <a href="/pages/envios" class="mobile-nav-link"><span>🚚</span> Envíos</a>
+      <a href="/pages/contacto" class="mobile-nav-link"><span>📞</span> Contacto</a>
+    </div>
+  </nav>
+
+  <div class="toast-container"></div>
+
+  <button class="scroll-top" aria-label="Volver arriba">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m18 15-6-6-6 6"/>
+    </svg>
+  </button>
+
+  {{ 'theme.js' | asset_url | script_tag }}
+</body>
+</html>

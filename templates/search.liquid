@@ -1,0 +1,59 @@
+<div class="container" style="padding-top:40px;padding-bottom:64px;">
+
+  <h1 style="font-size:1.8rem;font-weight:900;margin-bottom:24px;color:var(--color-primary-dark);">🔍 Buscar productos</h1>
+
+  <form action="/search" method="get" style="max-width:600px;margin-bottom:40px;">
+    <input type="hidden" name="type" value="product">
+    <div class="search-form" style="border-radius:var(--radius-full);">
+      <input
+        class="search-input"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Buscar juguetes, marcas, edades..."
+        aria-label="Buscar"
+        autofocus
+      >
+      <button class="search-btn" type="submit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </button>
+    </div>
+  </form>
+
+  {%- if search.performed -%}
+    {%- if search.results_count == 0 -%}
+      <div style="text-align:center;padding:60px 20px;">
+        <div style="font-size:4rem;margin-bottom:16px;">🔍</div>
+        <h2 style="font-weight:800;margin-bottom:8px;">Sin resultados para "{{ search.terms }}"</h2>
+        <p style="color:var(--color-text-light);margin-bottom:24px;">Intenta con otras palabras o explora nuestras categorías</p>
+        <a href="/collections/all" class="btn btn-primary">Ver todos los productos</a>
+      </div>
+    {%- else -%}
+      <p style="font-size:0.88rem;color:var(--color-text-light);margin-bottom:24px;">
+        Se encontraron <strong>{{ search.results_count }}</strong> resultados para "<strong>{{ search.terms }}</strong>"
+      </p>
+
+      <div class="products-grid">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {% render 'product-card', product: item %}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:48px;">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="btn btn-secondary btn-sm">← Anterior</a>
+          {%- endif -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="btn btn-secondary btn-sm">Siguiente →</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+
+</div>

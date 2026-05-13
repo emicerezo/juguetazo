@@ -1,0 +1,117 @@
+<div class="container" style="padding-top:40px;padding-bottom:64px;">
+
+  <!-- Collection Header -->
+  <div style="margin-bottom:32px;">
+    <nav aria-label="Ruta de navegación" style="font-size:0.82rem;color:var(--color-text-light);display:flex;align-items:center;gap:6px;margin-bottom:12px;">
+      <a href="/" style="color:var(--color-text-light);text-decoration:none;">Inicio</a>
+      <span>›</span>
+      <span style="color:var(--color-text);font-weight:600;">{{ collection.title }}</span>
+    </nav>
+    <h1 style="font-size:2rem;font-weight:900;color:var(--color-primary-dark);margin-bottom:8px;">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <p style="color:var(--color-text-light);font-size:0.9rem;">{{ collection.description }}</p>
+    {%- endif -%}
+    <p style="font-size:0.82rem;color:var(--color-text-light);margin-top:4px;">{{ collection.products_count }} productos encontrados</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:240px 1fr;gap:32px;align-items:start;">
+
+    <!-- Sidebar Filters -->
+    <aside style="background:var(--color-off-white);border-radius:var(--radius-lg);padding:24px;border:1.5px solid var(--color-border);position:sticky;top:calc(var(--header-height) + 80px);">
+      <h2 style="font-size:0.95rem;font-weight:800;margin-bottom:20px;color:var(--color-text);">Filtros</h2>
+
+      <!-- Price Filter -->
+      <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--color-border);">
+        <h3 style="font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-light);margin-bottom:12px;">Precio</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+            <input type="radio" name="price" value="0-200"> Hasta $200 MXN
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+            <input type="radio" name="price" value="200-500"> $200 – $500 MXN
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+            <input type="radio" name="price" value="500-1000"> $500 – $1,000 MXN
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+            <input type="radio" name="price" value="1000+"> Más de $1,000 MXN
+          </label>
+        </div>
+      </div>
+
+      <!-- Age Filter -->
+      <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--color-border);">
+        <h3 style="font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text-light);margin-bottom:12px;">Edad</h3>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+            <input type="checkbox"> 0–2 años (Bebés)
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+            <input type="checkbox"> 3–5 años (Preescolar)
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+            <input type="checkbox"> 6–10 años (Niños)
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;cursor:pointer;">
+            <input type="checkbox"> 11+ años
+          </label>
+        </div>
+      </div>
+
+      <!-- Clear filters -->
+      <a href="{{ collection.url }}" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;text-decoration:none;">
+        Limpiar filtros
+      </a>
+    </aside>
+
+    <!-- Products Grid -->
+    <div>
+      <!-- Sort bar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px;">
+        <span style="font-size:0.85rem;color:var(--color-text-light);">
+          Mostrando <strong>{{ collection.products_count }}</strong> productos
+        </span>
+        <select style="padding:8px 16px;border:1.5px solid var(--color-border);border-radius:var(--radius-full);font-size:0.85rem;font-family:inherit;background:white;cursor:pointer;outline:none;" aria-label="Ordenar productos">
+          <option value="best-selling">Más vendidos</option>
+          <option value="price-ascending">Precio: menor a mayor</option>
+          <option value="price-descending">Precio: mayor a menor</option>
+          <option value="created-descending">Más nuevos</option>
+          <option value="title-ascending">Nombre A–Z</option>
+        </select>
+      </div>
+
+      <div class="products-grid" style="grid-template-columns:repeat(3,1fr);">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      </div>
+
+      <!-- Pagination -->
+      {%- if paginate.pages > 1 -%}
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:48px;flex-wrap:wrap;">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="btn btn-secondary btn-sm">← Anterior</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="btn btn-secondary btn-sm">{{ part.title }}</a>
+            {%- else -%}
+              <span class="btn btn-primary btn-sm" aria-current="page">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="btn btn-secondary btn-sm">Siguiente →</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @media (max-width:768px) {
+    .container > div[style*="grid-template-columns:240px"] { grid-template-columns: 1fr !important; }
+    aside { position: static !important; }
+  }
+</style>
