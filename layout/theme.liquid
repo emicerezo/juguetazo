@@ -44,12 +44,21 @@
   <div class="mobile-menu-overlay"></div>
   <nav class="mobile-menu" aria-label="Menú móvil">
     <div class="mobile-menu-header">
-      <a href="/" class="site-logo">
-        <div class="logo-icon">🎮</div>
-        <div class="logo-text">
-          <span class="logo-name">Juguetazo</span>
-          <span class="logo-tagline">¡Diversión garantizada!</span>
-        </div>
+      <a href="/" class="site-logo" aria-label="{{ shop.name }}">
+        {%- if sections['header'].settings.logo -%}
+          <img
+            class="logo-img"
+            src="{{ sections['header'].settings.logo | img_url: '200x' }}"
+            alt="{{ sections['header'].settings.logo.alt | default: shop.name }}"
+            style="max-height:44px;width:auto;"
+            loading="lazy"
+          >
+        {%- else -%}
+          <div class="logo-text">
+            <span class="logo-name" style="color:white;">{{ shop.name }}</span>
+            <span class="logo-tagline">¡Diversión garantizada!</span>
+          </div>
+        {%- endif -%}
       </a>
       <button class="mobile-close" aria-label="Cerrar menú">✕</button>
     </div>

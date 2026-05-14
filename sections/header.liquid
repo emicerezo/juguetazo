@@ -3,11 +3,21 @@
     <div class="header-inner">
 
       <a href="/" class="site-logo" aria-label="{{ shop.name }}">
-        <div class="logo-icon">🎮</div>
-        <div class="logo-text">
-          <span class="logo-name">Juguetazo</span>
-          <span class="logo-tagline">¡Diversión garantizada!</span>
-        </div>
+        {%- if section.settings.logo -%}
+          <img
+            class="logo-img"
+            src="{{ section.settings.logo | img_url: '300x' }}"
+            alt="{{ section.settings.logo.alt | default: shop.name }}"
+            width="{{ section.settings.logo.width | at_most: section.settings.logo_max_width }}"
+            height="auto"
+            loading="eager"
+          >
+        {%- else -%}
+          <div class="logo-text">
+            <span class="logo-name">{{ shop.name }}</span>
+            <span class="logo-tagline">¡Diversión garantizada!</span>
+          </div>
+        {%- endif -%}
       </a>
 
       <div class="header-search">
@@ -63,6 +73,23 @@
 {% schema %}
 {
   "name": "Encabezado",
-  "settings": []
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo de la tienda",
+      "info": "Sube tu logotipo (PNG con fondo transparente recomendado)"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_width",
+      "label": "Ancho del logo",
+      "min": 60,
+      "max": 250,
+      "step": 10,
+      "unit": "px",
+      "default": 150
+    }
+  ]
 }
 {% endschema %}
