@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_primary": "#1B8A3C",
@@ -12,6 +21,36 @@
     "shipping_badge_text": "Envío GRATIS en compras mayores a $699 MXN",
     "contact_phone": "800 JUGUETAZO",
     "contact_email": "hola@juguetazo.mx",
-    "contact_hours": "Lun–Vie: 9am–7pm · Sáb: 9am–2pm"
+    "contact_hours": "Lun–Vie: 9am–7pm · Sáb: 9am–2pm",
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {}
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify://shop_images/jugetazo.png",
+          "logo_max_width": 150
+        }
+      },
+      "navigation": {
+        "type": "navigation",
+        "settings": {}
+      },
+      "newsletter": {
+        "type": "newsletter",
+        "settings": {}
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
   }
 }
