@@ -1,8 +1,19 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
-      "settings": {}
+      "settings": {
+        "hero_image": "shopify://shop_images/juguetes-como-pistolas-de-hidorgel-drones-y-juguetes-para-adolecentes.png"
+      }
     },
     "promo-banner": {
       "type": "promo-banner",
@@ -17,6 +28,7 @@
       "settings": {
         "title": "Más vendidos",
         "subtitle": "Los favoritos de nuestros clientes",
+        "collection": "",
         "products_count": 8
       }
     },
@@ -29,6 +41,7 @@
       "settings": {
         "title": "Nuevos lanzamientos",
         "subtitle": "Los últimos juguetes recién llegados",
+        "collection": "",
         "products_count": 4
       }
     },
