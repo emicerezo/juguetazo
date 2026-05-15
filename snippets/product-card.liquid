@@ -33,9 +33,7 @@
       {%- if on_sale -%}
         <span class="badge badge-sale">-{{ discount }}%</span>
       {%- endif -%}
-      {%- assign thirty_days_ago = 'now' | date: '%s' | minus: 2592000 -%}
-      {%- assign product_ts = product.created_at | date: '%s' -%}
-      {%- if product_ts > thirty_days_ago -%}
+      {%- if product.tags contains 'nuevo' -%}
         <span class="badge badge-new">Nuevo</span>
       {%- endif -%}
     </div>
