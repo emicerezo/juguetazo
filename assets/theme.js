@@ -309,3 +309,43 @@ if (announcementBar) {
 const style = document.createElement('style');
 style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
 document.head.appendChild(style);
+
+// ============ CARD IMAGE SLIDER ============
+function initCardSliders() {
+  document.querySelectorAll('[data-slider]').forEach(slider => {
+    const slides = slider.querySelectorAll('.card-slide');
+    const dots   = slider.querySelectorAll('.card-dot');
+    const prev   = slider.querySelector('.card-arrow-prev');
+    const next   = slider.querySelector('.card-arrow-next');
+    if (slides.length < 2) return;
+
+    let current = 0;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      slides[current].setAttribute('aria-hidden', 'true');
+      dots[current]?.classList.remove('active');
+
+      current = (index + slides.length) % slides.length;
+
+      slides[current].classList.add('active');
+      slides[current].removeAttribute('aria-hidden');
+      dots[current]?.classList.add('active');
+    }
+
+    prev?.addEventListener('click', (e) => { e.preventDefault(); goTo(current - 1); });
+    next?.addEventListener('click', (e) => { e.preventDefault(); goTo(current + 1); });
+
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+    // Swipe touch support
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener('touchend', (e) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    }, { passive: true });
+  });
+}
+
+initCardSliders();

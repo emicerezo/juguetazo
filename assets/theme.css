@@ -786,6 +786,93 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-light);
 }
 
+/* ============ CARD SLIDER ============ */
+.card-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--color-gray-light);
+}
+
+.card-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.card-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.card-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.92);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  opacity: 0;
+  transition: opacity var(--transition), background var(--transition), transform 0.25s ease;
+  color: var(--color-text);
+}
+
+.card-slider:hover .card-arrow { opacity: 1; }
+
+.card-arrow-prev { left: 8px; }
+.card-arrow-next { right: 8px; }
+
+.card-arrow:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.card-arrow-prev:hover { transform: translateY(-50%) scale(1.1); }
+.card-arrow-next:hover { transform: translateY(-50%) scale(1.1); }
+
+.card-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 10;
+}
+
+.card-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.card-dot.active {
+  background: white;
+  width: 16px;
+  border-radius: 3px;
+}
+
 /* ============ PRODUCT CARDS ============ */
 .products-section { padding: 60px 0; }
 

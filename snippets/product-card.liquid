@@ -4,30 +4,57 @@
   {%- assign on_sale = true -%}
   {%- assign discount = first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price -%}
 {%- endif -%}
+{%- assign image_count = product.images.size -%}
 
 <article class="product-card" aria-label="{{ product.title }}">
   <div class="product-image-wrapper">
-    <a href="{{ product.url }}">
-      {%- if product.featured_image -%}
-        <img
-          class="product-image"
-          src="{{ product.featured_image | img_url: '400x400', crop: 'center' }}"
-          alt="{{ product.featured_image.alt | default: product.title }}"
-          loading="lazy"
-          width="400"
-          height="400"
-        >
+
+    {%- comment %} Slider de imágenes {%- endcomment %}
+    <div class="card-slider" data-slider>
+      {%- if image_count > 0 -%}
+        {%- for image in product.images -%}
+          <a href="{{ product.url }}" class="card-slide{% if forloop.first %} active{% endif %}" aria-hidden="{% unless forloop.first %}true{% endunless %}">
+            <img
+              class="product-image"
+              src="{{ image | img_url: '400x400', crop: 'center' }}"
+              alt="{{ image.alt | default: product.title }}"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              width="400"
+              height="400"
+            >
+          </a>
+        {%- endfor -%}
       {%- else -%}
-        <img
-          class="product-image"
-          src="{{ 'product-placeholder.png' | asset_url }}"
-          alt="{{ product.title }}"
-          loading="lazy"
-          width="400"
-          height="400"
-        >
+        <a href="{{ product.url }}" class="card-slide active">
+          <img
+            class="product-image"
+            src="{{ 'product-placeholder.png' | asset_url }}"
+            alt="{{ product.title }}"
+            loading="lazy"
+            width="400"
+            height="400"
+          >
+        </a>
       {%- endif -%}
-    </a>
+
+      {%- if image_count > 1 -%}
+        <button class="card-arrow card-arrow-prev" aria-label="Imagen anterior" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <button class="card-arrow card-arrow-next" aria-label="Siguiente imagen" type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+        <div class="card-dots">
+          {%- for image in product.images -%}
+            <span class="card-dot{% if forloop.first %} active{% endif %}"></span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
 
     <div class="product-badges">
       {%- if on_sale -%}
