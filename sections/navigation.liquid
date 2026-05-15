@@ -1,34 +1,37 @@
-{%- assign main_menu = linklists[section.settings.menu] -%}
-
 <nav class="site-nav" role="navigation" aria-label="Navegación principal">
   <div class="nav-inner">
 
-    {%- for link in main_menu.links -%}
-      <div class="nav-item">
-        <a
-          href="{{ link.url }}"
-          class="nav-link{% if link.active %} active{% endif %}"
-          {% if link.links.size > 0 %}aria-haspopup="true"{% endif %}
-        >
-          {{ link.title }}
-          {%- if link.links.size > 0 -%}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          {%- endif -%}
-        </a>
+    <div class="nav-item">
+      <a href="/collections/all" class="nav-link">
+        🧸 Todos
+      </a>
+    </div>
 
-        {%- if link.links.size > 0 -%}
-          <div class="nav-dropdown">
-            {%- for child_link in link.links -%}
-              <a href="{{ child_link.url }}" {% if child_link.active %}class="active"{% endif %}>
-                {{ child_link.title }}
-              </a>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
+    <div class="nav-item">
+      <a href="/collections/all" class="nav-link">
+        🎯 Niños
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </a>
+      <div class="nav-dropdown">
+        <a href="/collections/juguetes-de-accion"><span>🦸</span> Juguetes de acción</a>
+        <a href="/collections/munecas"><span>👧</span> Muñecas</a>
+        <a href="/collections/juguetes-interactivos-y-educativos"><span>📚</span> Juguetes interactivos y educativos</a>
       </div>
-    {%- endfor -%}
+    </div>
+
+    <div class="nav-item">
+      <a href="/collections/vuelo-y-aventura" class="nav-link">
+        🏃 Outdoor
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </a>
+      <div class="nav-dropdown">
+        <a href="/collections/vuelo-y-aventura"><span>🚀</span> Vuelo y aventura</a>
+      </div>
+    </div>
 
   </div>
 </nav>
@@ -36,13 +39,6 @@
 {% schema %}
 {
   "name": "Navegación",
-  "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menú principal",
-      "default": "main-menu"
-    }
-  ]
+  "settings": []
 }
 {% endschema %}
