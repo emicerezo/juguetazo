@@ -1,55 +1,34 @@
+{%- assign main_menu = linklists[section.settings.menu] -%}
+
 <nav class="site-nav" role="navigation" aria-label="Navegación principal">
   <div class="nav-inner">
 
-    <div class="nav-item">
-      <a href="/collections/all" class="nav-link">
-        🧸 Todos
-      </a>
-    </div>
+    {%- for link in main_menu.links -%}
+      <div class="nav-item">
+        <a
+          href="{{ link.url }}"
+          class="nav-link{% if link.active %} active{% endif %}"
+          {% if link.links.size > 0 %}aria-haspopup="true"{% endif %}
+        >
+          {{ link.title }}
+          {%- if link.links.size > 0 -%}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          {%- endif -%}
+        </a>
 
-    <div class="nav-item">
-      <a href="/collections/bebes" class="nav-link">
-        👶 Bebés
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </a>
-      <div class="nav-dropdown">
-        <a href="/collections/bebes-0-6"><span>🍼</span> 0–6 meses</a>
-        <a href="/collections/bebes-6-12"><span>🧩</span> 6–12 meses</a>
-        <a href="/collections/bebes-1-2"><span>🎠</span> 1–2 años</a>
-        <a href="/collections/peluches"><span>🧸</span> Peluches</a>
-        <a href="/collections/sonajeros"><span>🎶</span> Sonajeros y mordedores</a>
+        {%- if link.links.size > 0 -%}
+          <div class="nav-dropdown">
+            {%- for child_link in link.links -%}
+              <a href="{{ child_link.url }}" {% if child_link.active %}class="active"{% endif %}>
+                {{ child_link.title }}
+              </a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       </div>
-    </div>
-
-    <div class="nav-item">
-      <a href="/collections/ninos" class="nav-link">
-        🎯 Niños
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </a>
-      <div class="nav-dropdown">
-        <a href="/collections/action-figures"><span>🦸</span> Figuras de acción</a>
-        <a href="/collections/autos"><span>🚗</span> Autos y vehículos</a>
-        <a href="/collections/juegos-mesa"><span>🎲</span> Juegos de mesa</a>
-        <a href="/collections/ciencia"><span>🔬</span> Ciencia y experimentos</a>
-        <a href="/collections/control-remoto"><span>🎮</span> Control remoto</a>
-      </div>
-    </div>
-
-    <div class="nav-item">
-      <a href="/collections/outdoor" class="nav-link">
-        🏃 Outdoor
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </a>
-      <div class="nav-dropdown">
-        <a href="/collections/voladores-blasters"><span>🚀</span> Voladores y Blasters</a>
-      </div>
-    </div>
+    {%- endfor -%}
 
   </div>
 </nav>
@@ -57,6 +36,13 @@
 {% schema %}
 {
   "name": "Navegación",
-  "settings": []
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú principal",
+      "default": "main-menu"
+    }
+  ]
 }
 {% endschema %}
