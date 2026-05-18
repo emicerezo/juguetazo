@@ -1478,6 +1478,26 @@ h1, h2, h3, h4, h5, h6 {
 
 .cart-item-price { font-size: 1rem; font-weight: 900; color: var(--color-primary-dark); }
 
+.cart-item-remove {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.cart-item-remove:hover {
+  background: rgba(239,68,68,0.1);
+  color: #EF4444;
+}
+
 .cart-drawer-footer {
   padding: 20px 24px;
   border-top: 2px solid var(--color-border);

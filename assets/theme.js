@@ -173,6 +173,48 @@ function updateLineItem(key, qty) {
   .catch(() => {});
 }
 
+// ============ REMOVE CART ITEM ============
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-remove-key]');
+  if (!btn) return;
+
+  const key = btn.dataset.removeKey;
+  btn.style.opacity = '0.4';
+  btn.disabled = true;
+
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: key, quantity: 0 })
+  })
+  .then(r => r.json())
+  .then(cart => {
+    const item = btn.closest('.cart-item');
+    item?.remove();
+    updateCartCount();
+    updateCartDrawer();
+
+    if (cart.item_count === 0) {
+      const body = document.querySelector('.cart-drawer-body');
+      const footer = document.querySelector('.cart-drawer-footer');
+      if (body) body.innerHTML = `
+        <div style="text-align:center;padding:60px 20px;color:var(--color-text-light);">
+          <div style="font-size:4rem;margin-bottom:16px;">🛒</div>
+          <h3 style="font-weight:800;margin-bottom:8px;color:var(--color-text);">Tu carrito está vacío</h3>
+          <p style="font-size:0.88rem;margin-bottom:24px;">¡Explora nuestros productos y encuentra el juguete perfecto!</p>
+          <button onclick="closeCart();window.location='/collections/all'" class="btn btn-primary">Ver productos</button>
+        </div>`;
+      if (footer) footer.style.display = 'none';
+    }
+    showToast('Producto eliminado del carrito');
+  })
+  .catch(() => {
+    btn.style.opacity = '1';
+    btn.disabled = false;
+    showToast('Error al eliminar el producto', 'error');
+  });
+});
+
 function updateCartDrawer() {
   fetch('/cart.js')
     .then(r => r.json())
