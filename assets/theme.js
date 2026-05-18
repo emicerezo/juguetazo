@@ -89,31 +89,74 @@ function createToastContainer() {
   return container;
 }
 
+// ============ CART STATE (optimistic) ============
+let _cartCount = 0;
+
+function getBadges() { return document.querySelectorAll('.cart-badge'); }
+
+function setCartBadge(count) {
+  _cartCount = Math.max(0, count);
+  getBadges().forEach(b => {
+    b.textContent = _cartCount;
+    b.style.display = _cartCount > 0 ? 'flex' : 'none';
+  });
+}
+
+function formatMoney(cents) {
+  return '$' + (cents / 100).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' MXN';
+}
+
+function recalcSubtotal() {
+  let total = 0;
+  document.querySelectorAll('.cart-item[data-unit-price]').forEach(item => {
+    const unit = parseInt(item.dataset.unitPrice) || 0;
+    const qty  = parseInt(item.querySelector('.qty-value')?.value) || 1;
+    total += unit * qty;
+    const priceEl = item.querySelector('.cart-item-price');
+    if (priceEl) priceEl.textContent = formatMoney(unit * qty);
+  });
+  const subtotalEl = document.querySelector('[data-cart-subtotal]');
+  if (subtotalEl) subtotalEl.textContent = formatMoney(total);
+}
+
+function showEmptyCart() {
+  const body   = document.querySelector('.cart-drawer-body');
+  const footer = document.querySelector('.cart-drawer-footer');
+  if (body) body.innerHTML = `
+    <div style="text-align:center;padding:60px 20px;color:var(--color-text-light);">
+      <div style="font-size:4rem;margin-bottom:16px;">🛒</div>
+      <h3 style="font-weight:800;margin-bottom:8px;color:var(--color-text);">Tu carrito está vacío</h3>
+      <p style="font-size:0.88rem;margin-bottom:24px;">¡Explora nuestros productos y encuentra el juguete perfecto!</p>
+      <button onclick="closeCart();window.location='/collections/all'" class="btn btn-primary">Ver productos</button>
+    </div>`;
+  if (footer) footer.style.display = 'none';
+}
+
 // ============ ADD TO CART ============
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-add-to-cart]');
   if (!btn) return;
 
-  const productId = btn.dataset.addToCart;
+  const productId    = btn.dataset.addToCart;
   const productTitle = btn.dataset.productTitle || 'Producto';
   const originalText = btn.innerHTML;
 
+  // — Optimistic: badge +1 de inmediato
+  setCartBadge(_cartCount + 1);
   btn.disabled = true;
-  btn.innerHTML = '<span style="display:inline-block;animation:spin 0.8s linear infinite">⏳</span> Agregando...';
+  btn.innerHTML = '✓ Agregado';
+  showToast(`${productTitle} agregado al carrito`);
+  openCart();
 
-  // Simulate Shopify cart AJAX
   fetch('/cart/add.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id: productId, quantity: 1 })
   })
   .then(r => r.json())
-  .then(() => {
-    showToast(`${productTitle} agregado al carrito`);
-    updateCartCount();
-    openCart();
-  })
+  .then(() => syncCartCount())
   .catch(() => {
+    setCartBadge(_cartCount - 1);
     showToast('Error al agregar el producto', 'error');
   })
   .finally(() => {
@@ -123,64 +166,73 @@ document.addEventListener('click', (e) => {
 });
 
 // ============ CART COUNT ============
-function updateCartCount() {
+function syncCartCount() {
   fetch('/cart.js')
     .then(r => r.json())
-    .then(cart => {
-      const badges = document.querySelectorAll('.cart-badge');
-      badges.forEach(badge => {
-        badge.textContent = cart.item_count;
-        badge.style.display = cart.item_count > 0 ? 'flex' : 'none';
-      });
-    })
+    .then(cart => setCartBadge(cart.item_count))
     .catch(() => {});
 }
 
 // Update on load
-updateCartCount();
+syncCartCount();
 
 // ============ QTY CONTROLS ============
 document.addEventListener('click', (e) => {
   const decreaseBtn = e.target.closest('.qty-btn[data-action="decrease"]');
   const increaseBtn = e.target.closest('.qty-btn[data-action="increase"]');
+  if (!decreaseBtn && !increaseBtn) return;
 
-  if (decreaseBtn || increaseBtn) {
-    const control = (decreaseBtn || increaseBtn).closest('.qty-control');
-    const input = control?.querySelector('.qty-value');
-    if (!input) return;
+  const control = (decreaseBtn || increaseBtn).closest('.qty-control');
+  const input   = control?.querySelector('.qty-value');
+  if (!input) return;
 
-    let val = parseInt(input.value) || 1;
-    if (decreaseBtn) val = Math.max(1, val - 1);
-    if (increaseBtn) val = Math.min(99, val + 1);
-    input.value = val;
+  const prevVal = parseInt(input.value) || 1;
+  let newVal = prevVal;
+  if (decreaseBtn) newVal = Math.max(1, prevVal - 1);
+  if (increaseBtn) newVal = Math.min(99, prevVal + 1);
 
-    const lineKey = control.dataset.lineKey;
-    if (lineKey) updateLineItem(lineKey, val);
-  }
-});
+  // — Optimistic: actualiza UI al instante
+  input.value = newVal;
+  recalcSubtotal();
 
-function updateLineItem(key, qty) {
+  const lineKey = control.dataset.lineKey;
+  if (!lineKey) return;
+
   fetch('/cart/change.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: key, quantity: qty })
+    body: JSON.stringify({ id: lineKey, quantity: newVal })
   })
   .then(r => r.json())
-  .then(() => {
-    updateCartCount();
-    updateCartDrawer();
-  })
-  .catch(() => {});
-}
+  .then(cart => setCartBadge(cart.item_count))
+  .catch(() => {
+    // Revert si falla
+    input.value = prevVal;
+    recalcSubtotal();
+  });
+});
 
 // ============ REMOVE CART ITEM ============
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-remove-key]');
   if (!btn) return;
 
-  const key = btn.dataset.removeKey;
-  btn.style.opacity = '0.4';
-  btn.disabled = true;
+  const key  = btn.dataset.removeKey;
+  const item = btn.closest('.cart-item');
+  const unit = parseInt(item?.dataset.unitPrice) || 0;
+  const qty  = parseInt(item?.querySelector('.qty-value')?.value) || 1;
+
+  // — Optimistic: oculta el item al instante
+  if (item) { item.style.transition = 'opacity 0.2s,transform 0.2s'; item.style.opacity = '0'; item.style.transform = 'translateX(20px)'; }
+  setCartBadge(_cartCount - qty);
+
+  setTimeout(() => item?.remove(), 200);
+  recalcSubtotal();
+
+  const remaining = document.querySelectorAll('.cart-item').length - 1;
+  if (remaining <= 0) showEmptyCart();
+
+  showToast('Producto eliminado del carrito');
 
   fetch('/cart/change.js', {
     method: 'POST',
@@ -188,47 +240,19 @@ document.addEventListener('click', (e) => {
     body: JSON.stringify({ id: key, quantity: 0 })
   })
   .then(r => r.json())
-  .then(cart => {
-    const item = btn.closest('.cart-item');
-    item?.remove();
-    updateCartCount();
-    updateCartDrawer();
-
-    if (cart.item_count === 0) {
-      const body = document.querySelector('.cart-drawer-body');
-      const footer = document.querySelector('.cart-drawer-footer');
-      if (body) body.innerHTML = `
-        <div style="text-align:center;padding:60px 20px;color:var(--color-text-light);">
-          <div style="font-size:4rem;margin-bottom:16px;">🛒</div>
-          <h3 style="font-weight:800;margin-bottom:8px;color:var(--color-text);">Tu carrito está vacío</h3>
-          <p style="font-size:0.88rem;margin-bottom:24px;">¡Explora nuestros productos y encuentra el juguete perfecto!</p>
-          <button onclick="closeCart();window.location='/collections/all'" class="btn btn-primary">Ver productos</button>
-        </div>`;
-      if (footer) footer.style.display = 'none';
-    }
-    showToast('Producto eliminado del carrito');
-  })
-  .catch(() => {
-    btn.style.opacity = '1';
-    btn.disabled = false;
-    showToast('Error al eliminar el producto', 'error');
-  });
+  .then(cart => setCartBadge(cart.item_count))
+  .catch(() => syncCartCount());
 });
 
 function updateCartDrawer() {
   fetch('/cart.js')
     .then(r => r.json())
     .then(cart => {
-      const subtotal = document.querySelector('[data-cart-subtotal]');
-      if (subtotal) {
-        subtotal.textContent = formatMoney(cart.total_price);
-      }
+      setCartBadge(cart.item_count);
+      const subtotalEl = document.querySelector('[data-cart-subtotal]');
+      if (subtotalEl) subtotalEl.textContent = formatMoney(cart.total_price);
     })
     .catch(() => {});
-}
-
-function formatMoney(cents) {
-  return '$' + (cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' MXN';
 }
 
 // ============ COUNTDOWN TIMER ============

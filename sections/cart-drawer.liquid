@@ -20,7 +20,7 @@
       </div>
     {%- else -%}
       {%- for item in cart.items -%}
-        <div class="cart-item" data-item-key="{{ item.key }}">
+        <div class="cart-item" data-item-key="{{ item.key }}" data-unit-price="{{ item.final_price }}">
           <img
             class="cart-item-img"
             src="{{ item.product.featured_image | img_url: '120x120', crop: 'center' }}"
