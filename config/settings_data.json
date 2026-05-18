@@ -44,7 +44,14 @@
       },
       "footer": {
         "type": "footer",
-        "settings": {}
+        "settings": {
+          "footer_logo": "shopify://shop_images/jugetazo.png",
+          "contact_phone": "",
+          "social_facebook": "",
+          "social_instagram": "",
+          "social_tiktok": "",
+          "social_whatsapp": ""
+        }
       },
       "cart-drawer": {
         "type": "cart-drawer",
