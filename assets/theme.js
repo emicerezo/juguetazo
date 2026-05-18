@@ -225,34 +225,100 @@ function initCountdown() {
 initCountdown();
 
 // ============ WISHLIST ============
+const wishlistOverlay = document.querySelector('.wishlist-overlay');
+const wishlistDrawer  = document.querySelector('.wishlist-drawer');
+const wishlistClose   = document.querySelector('.wishlist-close');
+const wishlistOpenBtn = document.querySelector('[data-wishlist-open]');
+
+function openWishlist() {
+  renderWishlistDrawer();
+  wishlistDrawer?.classList.add('open');
+  wishlistOverlay?.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeWishlist() {
+  wishlistDrawer?.classList.remove('open');
+  wishlistOverlay?.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+wishlistOpenBtn?.addEventListener('click', openWishlist);
+wishlistClose?.addEventListener('click', closeWishlist);
+wishlistOverlay?.addEventListener('click', closeWishlist);
+
+function renderWishlistDrawer() {
+  const body = document.getElementById('wishlist-body');
+  if (!body) return;
+  const list = getWishlist();
+
+  if (list.length === 0) {
+    body.innerHTML = `
+      <div style="text-align:center;padding:60px 20px;color:var(--color-text-light);">
+        <div style="font-size:3.5rem;margin-bottom:16px;">🤍</div>
+        <h3 style="font-weight:800;margin-bottom:8px;color:var(--color-text);">Aún no tienes favoritos</h3>
+        <p style="font-size:0.88rem;">Toca el ❤️ en cualquier producto para guardarlo aquí</p>
+      </div>`;
+    return;
+  }
+
+  body.innerHTML = list.map(item => `
+    <div class="cart-item" style="align-items:center;">
+      <img class="cart-item-img" src="${item.image}" alt="${item.title}" onerror="this.src=''">
+      <div class="cart-item-info">
+        <p class="cart-item-title">${item.title}</p>
+        <p style="font-size:0.9rem;font-weight:900;color:var(--color-primary-dark);margin:4px 0 8px;">${item.price}</p>
+        <div style="display:flex;gap:8px;">
+          <a href="${item.url}" class="btn btn-primary btn-sm" style="font-size:0.78rem;padding:6px 14px;">Ver producto</a>
+          <button onclick="removeFromWishlistAndRefresh('${item.id}')" style="background:none;border:1.5px solid #eee;border-radius:9999px;padding:6px 10px;font-size:0.75rem;cursor:pointer;color:var(--color-text-light);">✕ Quitar</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function removeFromWishlistAndRefresh(id) {
+  removeFromWishlist(id);
+  document.querySelectorAll(`[data-wishlist="${id}"]`).forEach(btn => {
+    btn.classList.remove('wishlisted');
+    btn.style.color = '';
+  });
+  updateWishlistBadge();
+  renderWishlistDrawer();
+}
+
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-wishlist]');
   if (!btn) return;
 
-  const heart = btn.querySelector('svg');
-  const productId = btn.dataset.wishlist;
+  const productId  = btn.dataset.wishlist;
+  const productTitle = btn.closest('.product-card')?.querySelector('.product-title')?.textContent?.trim() || '';
+  const productPrice = btn.closest('.product-card')?.querySelector('.price-current')?.textContent?.trim() || '';
+  const productImage = btn.closest('.product-card')?.querySelector('.product-image')?.src || '';
+  const productUrl   = btn.closest('.product-card')?.querySelector('.product-title a')?.href || '#';
 
   btn.classList.toggle('wishlisted');
   if (btn.classList.contains('wishlisted')) {
     btn.style.color = '#FF3B3B';
     showToast('Agregado a favoritos ❤️');
-    addToWishlist(productId);
+    addToWishlist({ id: productId, title: productTitle, price: productPrice, image: productImage, url: productUrl });
   } else {
     btn.style.color = '';
+    showToast('Eliminado de favoritos');
     removeFromWishlist(productId);
   }
+  updateWishlistBadge();
 });
 
-function addToWishlist(id) {
+function addToWishlist(item) {
   const list = getWishlist();
-  if (!list.includes(id)) {
-    list.push(id);
+  if (!list.find(i => i.id === item.id)) {
+    list.push(item);
     localStorage.setItem('juguetazo_wishlist', JSON.stringify(list));
   }
 }
 
 function removeFromWishlist(id) {
-  const list = getWishlist().filter(i => i !== id);
+  const list = getWishlist().filter(i => i.id !== id);
   localStorage.setItem('juguetazo_wishlist', JSON.stringify(list));
 }
 
@@ -261,15 +327,23 @@ function getWishlist() {
   catch { return []; }
 }
 
-// Apply wishlist state on load
+function updateWishlistBadge() {
+  const count = getWishlist().length;
+  const badge = document.querySelector('.wishlist-badge');
+  if (!badge) return;
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'flex' : 'none';
+}
+
 function applyWishlistState() {
   const list = getWishlist();
   document.querySelectorAll('[data-wishlist]').forEach(btn => {
-    if (list.includes(btn.dataset.wishlist)) {
+    if (list.find(i => i.id === btn.dataset.wishlist)) {
       btn.classList.add('wishlisted');
       btn.style.color = '#FF3B3B';
     }
   });
+  updateWishlistBadge();
 }
 applyWishlistState();
 
