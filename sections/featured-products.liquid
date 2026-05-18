@@ -1,4 +1,8 @@
-{%- assign collection = collections[section.settings.collection] -%}
+{%- if section.settings.collection != blank -%}
+  {%- assign collection = collections[section.settings.collection] -%}
+{%- else -%}
+  {%- assign collection = collections.all -%}
+{%- endif -%}
 
 <section class="products-section" aria-labelledby="featured-title">
   <div class="container">
@@ -9,20 +13,18 @@
         </h2>
         <p class="section-subtitle">{{ section.settings.subtitle | default: 'Los favoritos de nuestros clientes' }}</p>
       </div>
-      {%- if section.settings.collection != blank -%}
-        <a href="{{ collection.url }}" class="btn btn-secondary">Ver todos →</a>
-      {%- endif -%}
+      <a href="{{ collection.url | default: '/collections/all' }}" class="btn btn-secondary">Ver todos →</a>
     </div>
 
     <div class="products-grid">
-      {%- if collection != blank -%}
+      {%- if collection.products_count > 0 -%}
         {%- for product in collection.products limit: section.settings.products_count -%}
           {% render 'product-card', product: product %}
         {%- endfor -%}
       {%- else -%}
-        {%- for i in (1..8) -%}
-          {% render 'product-card-placeholder', index: i %}
-        {%- endfor -%}
+        <p style="color:var(--color-text-light);grid-column:1/-1;text-align:center;padding:40px 0;">
+          No hay productos disponibles en este momento.
+        </p>
       {%- endif -%}
     </div>
   </div>
