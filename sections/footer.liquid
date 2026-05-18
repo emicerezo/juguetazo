@@ -2,35 +2,80 @@
   <div class="container">
     <div class="footer-grid">
 
+      <!-- Marca -->
       <div class="footer-brand">
         <a href="/" class="footer-logo">
-          <div class="footer-logo-icon">🎮</div>
-          <span class="footer-logo-name">Juguetazo</span>
+          {%- if section.settings.footer_logo -%}
+            <img
+              src="{{ section.settings.footer_logo | img_url: '200x' }}"
+              alt="{{ shop.name }}"
+              style="max-height:48px;width:auto;object-fit:contain;"
+              loading="lazy"
+            >
+          {%- elsif sections['header'].settings.logo -%}
+            <img
+              src="{{ sections['header'].settings.logo | img_url: '200x' }}"
+              alt="{{ shop.name }}"
+              style="max-height:48px;width:auto;object-fit:contain;"
+              loading="lazy"
+            >
+          {%- else -%}
+            <div class="footer-logo-icon">🎮</div>
+            <span class="footer-logo-name">{{ shop.name }}</span>
+          {%- endif -%}
         </a>
+
         <p>
-          Tu tienda de juguetes de confianza en México. Ofrecemos más de 3,000 productos de las mejores marcas con envíos rápidos a todo el país.
+          Tu tienda de juguetes de confianza en México. Envíos rápidos a toda la República Mexicana.
         </p>
+
         <div class="footer-social">
-          <a href="https://facebook.com/juguetazo" class="social-btn" aria-label="Facebook" target="_blank" rel="noopener">f</a>
-          <a href="https://instagram.com/juguetazo" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener">ig</a>
-          <a href="https://tiktok.com/@juguetazo" class="social-btn" aria-label="TikTok" target="_blank" rel="noopener">tt</a>
-          <a href="https://wa.me/5215500000000" class="social-btn" aria-label="WhatsApp" target="_blank" rel="noopener">wa</a>
+          {%- if section.settings.social_facebook != blank -%}
+            <a href="{{ section.settings.social_facebook }}" class="social-btn" aria-label="Facebook" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_instagram != blank -%}
+            <a href="{{ section.settings.social_instagram }}" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_tiktok != blank -%}
+            <a href="{{ section.settings.social_tiktok }}" class="social-btn" aria-label="TikTok" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.07-.1z"/>
+              </svg>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.social_whatsapp != blank -%}
+            <a href="{{ section.settings.social_whatsapp }}" class="social-btn" aria-label="WhatsApp" target="_blank" rel="noopener">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.122 1.529 5.853L.057 23.571l5.867-1.539A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.001-1.368l-.36-.214-3.48.912.929-3.395-.234-.373A9.818 9.818 0 1 1 12 21.818z"/>
+              </svg>
+            </a>
+          {%- endif -%}
         </div>
       </div>
 
+      <!-- Categorías -->
       <div class="footer-col">
         <h4>Categorías</h4>
         <ul>
-          <li><a href="/collections/bebes">👶 Bebés (0–2 años)</a></li>
-          <li><a href="/collections/preescolar">🎨 Preescolar (3–5)</a></li>
-          <li><a href="/collections/ninos">🎯 Niños (6–10)</a></li>
-          <li><a href="/collections/adolescentes">🎮 Adolescentes</a></li>
-          <li><a href="/collections/outdoor">🏃 Outdoor</a></li>
-          <li><a href="/collections/educativos">📚 Educativos</a></li>
-          <li><a href="/collections/ofertas">🔥 Ofertas</a></li>
+          <li><a href="/collections/all">🧸 Todos los juguetes</a></li>
+          <li><a href="/collections/munecas">👧 Muñecas</a></li>
+          <li><a href="/collections/juguetes-de-accion">🦸 Juguetes de acción</a></li>
+          <li><a href="/collections/juguetes-interactivos-y-educativos">📚 Interactivos y educativos</a></li>
+          <li><a href="/collections/vuelo-y-aventura">🚀 Vuelo y aventura</a></li>
+          <li><a href="/collections/ultimas-piezas">🔥 Últimas piezas</a></li>
         </ul>
       </div>
 
+      <!-- Ayuda -->
       <div class="footer-col">
         <h4>Ayuda</h4>
         <ul>
@@ -43,21 +88,27 @@
         </ul>
       </div>
 
+      <!-- Contacto -->
       <div class="footer-col">
         <h4>Contacto</h4>
-        <div class="footer-contact-item">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-          </svg>
-          <p>800 JUGUETAZO<br>(800 584-8382)</p>
-        </div>
+
+        {%- if section.settings.contact_phone != blank -%}
+          <div class="footer-contact-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <p>{{ section.settings.contact_phone }}</p>
+          </div>
+        {%- endif -%}
+
         <div class="footer-contact-item">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
-          <p>hola@juguetazo.mx</p>
+          <p>juguetazo.mx@gmail.com</p>
         </div>
+
         <div class="footer-contact-item">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
@@ -66,23 +117,25 @@
           <p>Lun–Vie: 9am–7pm<br>Sáb: 9am–2pm</p>
         </div>
 
-        <div style="margin-top:16px;">
-          <a
-            href="https://wa.me/5215500000000?text=Hola%2C%20quiero%20información%20sobre%20sus%20juguetes"
-            class="btn btn-sm"
-            style="background:#25D366;color:white;border-radius:9999px;font-size:0.82rem;padding:8px 18px;display:inline-flex;align-items:center;gap:6px;text-decoration:none;"
-            target="_blank"
-            rel="noopener"
-          >
-            💬 Chatea por WhatsApp
-          </a>
-        </div>
+        {%- if section.settings.social_whatsapp != blank -%}
+          <div style="margin-top:16px;">
+            <a
+              href="{{ section.settings.social_whatsapp }}?text=Hola%2C%20quiero%20información%20sobre%20sus%20juguetes"
+              class="btn btn-sm"
+              style="background:#25D366;color:white;border-radius:9999px;font-size:0.82rem;padding:8px 18px;display:inline-flex;align-items:center;gap:6px;text-decoration:none;"
+              target="_blank"
+              rel="noopener"
+            >
+              💬 Chatea por WhatsApp
+            </a>
+          </div>
+        {%- endif -%}
       </div>
 
     </div>
 
     <div class="footer-bottom">
-      <p>© {{ 'now' | date: '%Y' }} Juguetazo. Todos los derechos reservados. |
+      <p>© {{ 'now' | date: '%Y' }} {{ shop.name }}. Todos los derechos reservados. |
         <a href="/pages/privacidad">Privacidad</a> ·
         <a href="/pages/terminos">Términos</a>
       </p>
@@ -101,6 +154,51 @@
 {% schema %}
 {
   "name": "Footer",
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Logo en el footer",
+      "info": "Si no subes uno, usará el mismo logo del header"
+    },
+    {
+      "type": "header",
+      "content": "Contacto"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Teléfono",
+      "placeholder": "Ej: 55 1234 5678"
+    },
+    {
+      "type": "header",
+      "content": "Redes sociales"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "TikTok"
+    },
+    {
+      "type": "url",
+      "id": "social_whatsapp",
+      "label": "WhatsApp (https://wa.me/52XXXXXXXXXX)"
+    }
+  ]
 }
 {% endschema %}
