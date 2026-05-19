@@ -264,9 +264,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .logo-img {
   display: block;
-  max-height: 52px;
+  max-height: 72px;
   width: auto;
-  max-width: var(--logo-max-width, 150px);
+  max-width: var(--logo-max-width, 200px);
   object-fit: contain;
   transition: opacity var(--transition);
 }
